@@ -17,7 +17,7 @@ class App extends React.Component {
 		var tasks = [
 			{
 				id:this.generateID(),
-				name:'REACT JS',
+				name:'REACT JS1',
 				status:"true"
 			},
 			{
