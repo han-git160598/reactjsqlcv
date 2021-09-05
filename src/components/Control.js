@@ -1,7 +1,8 @@
 import React from 'react';
 import Search from './Search';
 import Sort from './Sort';
-
+import { connect } from 'react-redux';
+import * as actions from './../actions/index';
 
 class Control extends React.Component {
     constructor(props){
@@ -13,20 +14,34 @@ class Control extends React.Component {
         }
     }
     handleSearchTasks=(keyword)=>{
-        this.props.handleControlData1(keyword,this.state.sortTasks,this.state.filterTasks)
+        var data = {
+            keyword:keyword,
+            sortTasks:this.state.sortTasks,
+            filterTasks:this.state.filterTasks,
+        }
+        this.props.onFilterTask(data)
         this.setState({keyword:keyword})
         
        
     }
     SortData = (selected) =>{
-        this.props.handleControlData1(this.state.keyword,selected,this.state.filterTasks)
+        var data = {
+            keyword:this.state.keyword,
+            sortTasks:selected,
+            filterTasks:this.state.filterTasks,
+        }
+        this.props.onFilterTask(data)
         this.setState({sortTasks:selected})
         
     
     }
     filterData = (selected)=>{
-        this.props.handleControlData1(this.state.keyword,this.state.sortTasks,selected)
-        console.log('vung2',selected)
+        var data = {
+            keyword:this.state.keyword,
+            sortTasks:this.state.sortTasks,
+            filterTasks:selected
+        }
+        this.props.onFilterTask(data)
         this.setState({filterTasks:selected})
         
     }
@@ -44,4 +59,16 @@ class Control extends React.Component {
 	}
 }
 
-export default Control;
+const mapStateToProps  = (state) =>{
+    return {
+        
+    }
+}
+const mapDispatchToProps =(dispatch,props)=>{
+    return {
+        onFilterTask: (data)=>{
+            dispatch(actions.findTasks(data))
+        }
+    }
+}
+export default connect(mapStateToProps,mapDispatchToProps) (Control);

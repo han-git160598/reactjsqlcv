@@ -18,7 +18,7 @@ class Search extends React.Component {
                     <input onChange={this.handleSearchTasks} type="text" className="form-control" id="exampleInputAmount" placeholder="Search" />
                     <span className="input-group-btn">
                         <button type="button" className="btn btn-default">
-                            <span className="fa fa-search mr-5"></span>
+                            <span className="fa fa-search-minus mr-5"></span>
                         </button>
                     </span>
                 </div>

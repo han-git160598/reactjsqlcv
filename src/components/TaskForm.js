@@ -1,5 +1,6 @@
 import React from 'react';
-
+import { connect } from 'react-redux';
+import * as actions from './../actions/index';
 
 class TaskForm extends React.Component {
     constructor(){
@@ -22,7 +23,9 @@ class TaskForm extends React.Component {
         if(this.state.name)
         {
             let dataTask = {name:this.state.name, status:this.state.status}
-            this.props.addTask(dataTask)
+            this.props.onAddTask(dataTask)
+            this.setState({name:''})
+            
         }
     }
 	render() {
@@ -44,7 +47,7 @@ class TaskForm extends React.Component {
                 <form>
                     <div className="form-group">
                         <label >Tên</label>
-                        <input onChange={this.addTaskName} type="text" className="form-control"/> 
+                        <input onChange={this.addTaskName} value={this.state.name} type="text" className="form-control"/> 
                     </div>
                     <div className="form-group">
                         <label  >Trạng thái</label>
@@ -70,4 +73,16 @@ class TaskForm extends React.Component {
 	}
 }
 
-export default TaskForm;
+const mapStateToProps = (state)=>{
+    return {
+
+    }
+}
+const mapDispatchToProps = (dispatch, props) =>{
+    return {
+        onAddTask: (task)=>{
+            dispatch(actions.addTask(task)); 
+        }
+    }
+}
+export default connect(mapStateToProps,mapDispatchToProps)(TaskForm);

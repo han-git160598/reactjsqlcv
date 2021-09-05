@@ -11,7 +11,7 @@ class Sort extends React.Component {
        
     }
     filterData = (e)=>{
-        console.log('vung1',e.target.value)
+      
         this.setState({filterData:e.target.value})
         this.props.filterData(e.target.value)
 

@@ -2,79 +2,54 @@
 import React from 'react';
 import TaskItem from './TaskItem';
 import TaskStatus from './TaskStatus';
-
-
+import { connect } from 'react-redux';
+import * as actions from './../actions/index';
 class TaskList extends React.Component {
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
         this.state={
             idTask:null,
             name:'',
             status:"true"
         }
     }
-   
-    handleDeleteTask= (id)=>{
-      let arrTasks = JSON.parse(localStorage.getItem('tasks'))
-      if(arrTasks)
-      {
-        let arrNew = arrTasks.filter(
-            (data)=>data.id !== id
-          )
-        this.props.handleDeleteTask(arrNew)
-      }
-    }
-    handleDetailTask =(id)=>{
-        
-        let arrTasks = JSON.parse(localStorage.getItem('tasks'))
-        if(arrTasks)
-        {
-            let result =  arrTasks.filter(
-                data=>data.id === id
-            )
-            this.setState({name:result[0].name,status:result[0].status,idTask:id })
-        }
-       
+    EditTaskName =(data)=>{
+        this.setState({name:data})
     }
     handeChangeStatus =(data)=>{
         this.setState({status:data})
     }
     handleChangeName = (e)=>{
+      
         this.setState({name:e.target.value})
     }
-   
+  
     handleUpdateTask = ()=>{
-        let arrTasks = JSON.parse(localStorage.getItem('tasks'))
-     
-        if(arrTasks && this.state.idTask)
+        var id = this.props.detailtask.length === 1 ? this.props.detailtask[0].id : '';
+        if(id && this.state.name)
         {
-         
-            for(let i=0;i<arrTasks.length;i++)
-            {
-               
-                if(arrTasks[i].id === this.state.idTask)
-                {
-                    console.log(this.state.status)
-                    arrTasks[i].name=this.state.name
-                    arrTasks[i].status=this.state.status
-                }
-            }
+            var data = {name:this.state.name, status:this.state.status, id:id}
+            this.props.onUpdate(data)
+            this.setState({ 
+                idTask:null,
+                name:'',
+                status:"true"
+            })
         }
         
-        this.props.handleUpdateTask(arrTasks)
     }
+
 	render() {
+       
         let num = 0;
         let elmTasks = this.props.tasks.map((task,index)=>{
             num++;
             return (
                 <TaskItem 
-                    task={task} 
+                    task1={task} 
                     num={num} 
                     key={index}
-                    handleDeleteTask={this.handleDeleteTask}
-                    handleDetailTask = {this.handleDetailTask}
-                />
+                /> 
             )      
         })
 		return (
@@ -89,17 +64,17 @@ class TaskList extends React.Component {
                             <th>Hành Động</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody> 
                         <tr>
                             <td className="text-center">
                                Chi tiết
                             </td>
                             <td>
-                                <input onChange={this.handleChangeName} type="text" value={this.state.name} className="form-control"  />
+                                <input onChange={this.handleChangeName} value={this.state.name} type="text" className="form-control"  />
                             </td>
                             <td>
                                 <TaskStatus 
-                                    activeStatus={this.state.status}
+                                    EditTaskName = {this.EditTaskName}
                                     handeChangeStatus={this.handeChangeStatus}
                                 />
                             </td>
@@ -118,7 +93,21 @@ class TaskList extends React.Component {
 	}
 }
 
-export default TaskList;
+const mapStateToProps  = (state) =>{
+    
+    return {
+        tasks :state.tasks,
+        detailtask:state.detailtask
+    }
+}
+const mapDispatchToProps =(dispatch,props)=>{
+    return {
+        onUpdate: (data)=>{
+            dispatch(actions.updateTask(data))
+        }
+    }
+}
+export default connect(mapStateToProps,mapDispatchToProps) (TaskList);
 
 
 
