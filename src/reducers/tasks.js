@@ -18,6 +18,11 @@ var myReducer = (state = initialState,action)=>{
             return state;
         case types.ADD_TASK:
             var newData = JSON.parse(localStorage.getItem('tasks'));
+            if(!newData)
+            {
+                
+                newData =[];
+            }
             var newTask = {
                 id : generateID(),
                 name:action.task.name,
