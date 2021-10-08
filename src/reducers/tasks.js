@@ -34,7 +34,7 @@ var myReducer = (state = initialState,action)=>{
             return [...newData];   
         case types.DELETE_TASK:
             let arrNew = state.filter(
-                (data)=>data.id !== action.id
+                (data)=>data.id !== action.id 
             )
             localStorage.setItem('tasks',JSON.stringify(arrNew))
             return arrNew;
